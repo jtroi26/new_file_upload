@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>File Upload</title>
+</head>
+
+<body>
+    <h1>Upload a File</h1>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <button type="submit">Upload</button>
+    </form>
+
+    <h1>Uploaded Files</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>File Name</th>
+                <th>Path</th>
+                <th>MIME Type</th>
+                <th>Size</th>
+                <th>Preview</th>
+                <th>Download</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% files.forEach(file => { %>
+            <tr>
+                <td><%= file.filename %></td>
+                <td><%= file.path %></td>
+                <td><%= file.mimetype %></td>
+                <td><%= file.size %></td>
+                <td>
+                    <% if (file.mimetype.startsWith('image')) { %>
+                    <!-- Display image -->
+                    <img src="<%= file.path %>" alt="<%= file.filename %>" style="max-width: 200px;">
+                    <% } else { %>
+                    <!-- Display a message for other file types -->
+                    File preview not available
+                    <% } %>
+                </td>
+                <td><a href="/download/<%= file.filename %>">Download</a></td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</body>
+
+<script>
+    const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'C:/Users/justr/Downloads/uploadfile/uploads'); // Specify the absolute path to the uploads directory
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname);
+    }
+});
+
+</script>
+
+</html>

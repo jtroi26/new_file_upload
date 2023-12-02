@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>File Upload</title>
+</head>
+
+<body>
+    <h1>Upload a File</h1>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <button type="submit">Upload</button>
+    </form><br><br>
+
+    <h1>Uploaded Files</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>File Name</th>
+                <th>Path</th>
+                <th>MIME Type</th>
+                <th>Size</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% files.forEach(file => { %>
+            <tr>
+                <td><%= file.filename %></td>
+                <td><%= file.path %></td>
+                <td><%= file.mimetype %></td>
+                <td><%= file.size %></td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+
+</html>
