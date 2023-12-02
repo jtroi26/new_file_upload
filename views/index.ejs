@@ -34,18 +34,23 @@
                 <td><%= file.size %></td>
                 <td>
                     <% if (file.mimetype.startsWith('image')) { %>
-                    <!-- Display image -->
-                    <img src="<%= file.path %>" alt="<%= file.filename %>" style="max-width: 200px;">
+                        <!-- Display image -->
+                        <img src="<%= file.path %>" alt="<%= file.filename %>" style="max-width: 200px;">
+                    <% } else if (file.mimetype === 'application/pdf') { %>
+                        <!-- Display PDF using an iframe -->
+                        <iframe src="<%= file.path %>" width="500" height="400"></iframe>
                     <% } else { %>
-                    <!-- Display a message for other file types -->
-                    File preview not available
+                        <!-- Display a message for other file types -->
+                        File preview not available
                     <% } %>
+                    <br>
                 </td>
                 <td><a href="/download/<%= file.filename %>">Download</a></td>
             </tr>
             <% }); %>
         </tbody>
     </table>
+
 </body>
 </body>
 

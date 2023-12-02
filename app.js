@@ -13,6 +13,7 @@ const conn = {
 
 // Set the view engine to EJS
 app.set('view engine', 'ejs');
+app.use('/uploads', express.static('uploads'));
 
 // Route to render the upload form
 app.get('/', async (req, res) => {
@@ -84,6 +85,30 @@ app.get('/download/:filename', async (req, res) => {
         res.status(500).send('Error downloading file');
     }
 });
+
+app.get('/preview/:filename', async (req, res) => {
+    try {
+        const fileName = req.params.filename;
+        // Retrieve the file path from the database based on the provided filename
+        // Adjust this query based on your database schema
+        const connection = await pool.getConnection();
+        const [rows] = await connection.query('SELECT path FROM uploaded_files WHERE filename = ?', [fileName]);
+        connection.release();
+
+        if (rows.length > 0) {
+            const filePath = rows[0].path;
+            // Send the file for preview
+            res.sendFile(filePath);
+        } else {
+            res.status(404).send('File not found');
+        }
+    } catch (err) {
+        console.error('Error previewing file:', err);
+        res.status(500).send('Error previewing file');
+    }
+});
+
+
 
 
 // Start the server
